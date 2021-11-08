@@ -65,7 +65,7 @@ function getMessage(coin){
 				prvRate = rJson.prvRate
 				prvTokens = rJson.prvTokens
 			}
-			msg += `🥩<b>Staking</b>\n\n`
+			msg += `🥩<b>스테이킹</b>\n\n`
 			msg += `💰<b>가격: $${priceUsd} (약 ${numberWithCommas(priceKrw)}원)</b>\n\n`
 			msg += `🔐본딩: ${stakedPercent}% / 🔓언본딩: ${notStakedPercent}%\n\n`
 			msg += `⛓️최대공급량: ${numberWithCommas(maxTokens)} (100%)\n\n`
