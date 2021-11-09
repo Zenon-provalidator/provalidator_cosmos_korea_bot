@@ -84,6 +84,71 @@ function getMessage(coin){
 		return null
 	}
 }
+function getProposal(num){
+	let jsonLocal = getProposalFromLocal(num)
+	console.log(jsonLocal)
+	//PROPOSAL_STATUS_DEPOSIT_PERIOD | PROPOSAL_STATUS_VOTING_PERIOD | PROPOSAL_STATUS_PASSED | PROPOSAL_STATUS_REJECTED
+	if(jsonLocal === 0 || jsonLocal === false){//not found json file from local
+		let jsonServer = getProposalFromServer(num) //get server data 
+		if(jsonServer === 203){//not found
+			return "Not found proposal #" + num
+		} else if(jsonServer === 500 || jsonServer === false){//internal error
+			return "Sorry! bot has error."
+		}else{
+//			return jsonServer
+			return `#${num}${jsonServer.title}\n\n ${jsonServer.desc}\n\nhttps://www.mintscan.io/osmosis/proposals/${num}`
+		}
+	} else {
+		//proposal is not fixed
+		if(jsonLocal.status === "PROPOSAL_STATUS_PASSED" || jsonLocal.status === "PROPOSAL_STATUS_REJECTED"){
+//			return jsonLocal
+			return `Proposal #${num} ${jsonLocal.title}\n\n ${jsonLocal.desc}\n\nhttps://www.mintscan.io/osmosis/proposals/${num}`
+		} else{
+			return getProposalFromServer(num)
+		}
+	}
+}
+function getProposalFromServer(num){ //write Proposal json
+	let json = fetch(process.env.COSMOS_API_URL+"/gov/proposal/"+num).json()
+	let file = './json/proposals/' + num + '.json'
+	let wJson = {}
+	//logger.info(json)
+	
+	try{
+		if(typeof json.proposal_id !== "undefined"){
+			wJson = {
+				"id" : json.proposal_id, 
+				"title" : json.title, 
+				"desc" : json.description, 
+				"status" : json.proposal_status
+			}
+			fs.writeFileSync(file, JSON.stringify(wJson))
+			return wJson
+		} else{
+			//203 not found , 500 error
+			return json.error_code
+		}		
+	}catch(err){
+		logger.error(`=======================getProposalFromServer error=======================`)
+		logger.error(json)
+		return false
+	}
+}
+
+function getProposalFromLocal(num){//read Proposal json
+	let file = './json/proposals/' + num + '.json'
+	try{
+		if(fs.existsSync(file)){
+			return JSON.parse(fs.readFileSync(file))
+		} else {
+			return 0
+		}
+	} catch(err){
+		logger.error(`=======================getProposalFromJson error=======================`)
+		logger.error(json)
+		return false
+	}
+}
 
 function numberWithCommas(x) {
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -125,5 +190,8 @@ function getProvalidatorDetail(){
 
 module.exports = {
 	getMessage : getMessage,
-	getProvalidatorDetail : getProvalidatorDetail
+	getProvalidatorDetail : getProvalidatorDetail,
+	getProposal : getProposal,
+	getProposalFromServer : getProposalFromServer,
+	getProposalFromLocal : getProposalFromLocal
 }
