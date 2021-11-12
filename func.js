@@ -84,9 +84,10 @@ function getMessage(coin){
 		return null
 	}
 }
+
 function getProposal(num){
+	let title = ''
 	let jsonLocal = getProposalFromLocal(num)
-	console.log(jsonLocal)
 	//PROPOSAL_STATUS_DEPOSIT_PERIOD | PROPOSAL_STATUS_VOTING_PERIOD | PROPOSAL_STATUS_PASSED | PROPOSAL_STATUS_REJECTED
 	if(jsonLocal === 0 || jsonLocal === false){//not found json file from local
 		let jsonServer = getProposalFromServer(num) //get server data 
@@ -95,19 +96,35 @@ function getProposal(num){
 		} else if(jsonServer === 500 || jsonServer === false){//internal error
 			return "Sorry! bot has error."
 		}else{
-//			return jsonServer
-			return `#${num}${jsonServer.title}\n\n ${jsonServer.desc}\n\nhttps://www.mintscan.io/osmosis/proposals/${num}`
+			title = jsonServer.title
 		}
 	} else {
 		//proposal is not fixed
 		if(jsonLocal.status === "PROPOSAL_STATUS_PASSED" || jsonLocal.status === "PROPOSAL_STATUS_REJECTED"){
-//			return jsonLocal
-			return `Proposal #${num} ${jsonLocal.title}\n\n ${jsonLocal.desc}\n\nhttps://www.mintscan.io/osmosis/proposals/${num}`
+			title = jsonLocal.title
 		} else{
-			return getProposalFromServer(num)
+			let jsonServer = getProposalFromServer(num) //get server data
+			title = jsonServer.title
 		}
 	}
+	let prvDetail = getProvalidatorDetail()//get provalidator detail info
+	let prvRank = prvDetail.rank
+	let prvRate = (prvDetail.rate * 100)
+	let prvTokens = (prvDetail.tokens/ 1000000).toFixed(0)
+	let msg = `<b>⚛️ 코스모스 ($ATOM) 거버넌스</b>\n` 
+	msg += `ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n\n\n`
+	msg += `<b>🗳️프로포절</b>\n\n`
+	msg += `#${num} ${title}\n\n`
+	msg += `📌<a href='https://www.mintscan.io/cosmos/proposals/${num}'>https://www.mintscan.io/cosmos/proposals/${num}</a>\n\n`
+	msg += `<b>프로밸리와 $ATOM 스테이킹 하세요❤</b>\n\n`
+	msg += `<b>🏆검증인 순위: #${prvRank}</b>\n\n`
+	msg += `<b>🔖수수료: ${prvRate}%</b>\n\n`
+	msg += `<b>🤝위임량: ${numberWithCommas(prvTokens)}</b>\n\n\n`
+	msg += `ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n`
+	msg += `<b>프로밸리(<a href='https://provalidator.com'>Provalidator</a>) 검증인 만듦</b>`
+	return msg
 }
+
 function getProposalFromServer(num){ //write Proposal json
 	let json = fetch(process.env.COSMOS_API_URL+"/gov/proposal/"+num).json()
 	let file = './json/proposals/' + num + '.json'
