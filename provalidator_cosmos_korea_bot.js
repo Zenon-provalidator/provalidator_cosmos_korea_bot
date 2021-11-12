@@ -83,7 +83,7 @@ const botJob = new CronJob(`*/60 * * * * *`, async function () {
 		let getProposal = func.getProposalFromServer(callProposalNum)
 		
 		if(typeof getProposal === "object"){
-			bot.telegram.sendMessage('-610675987', `New Proposal! #${callProposalNum} ${getProposal.title}\n\n ${getProposal.desc}\n\nhttps://www.mintscan.io/osmosis/proposals/${callProposalNum}`)
+			bot.telegram.sendMessage(process.env.PROPOSAL_ALERT_ROOM_ID, `New Proposal! #${callProposalNum} ${getProposal.title}\n\n ${getProposal.desc}\n\nhttps://www.mintscan.io/osmosis/proposals/${callProposalNum}`)
 		} else if(getProposal === 203){
 			logger.debug(`${callProposalNum} proposal is not found`)
 		} else{
