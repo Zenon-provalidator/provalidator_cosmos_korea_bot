@@ -3,6 +3,7 @@ const Extra = require('telegraf/extra')
 const session = require('telegraf/session')
 const commandParts = require('telegraf-command-parts')//telegraf middleware
 const logger = require('./log4js').log4js//logger
+const CronJob = require('cron').CronJob
 const func = require('./func')
 require('dotenv').config()
 const bot = new Telegraf(process.env.BOT_TOKEN, {username: process.env.BOT_ID})
@@ -71,6 +72,25 @@ bot.command('proposal', (ctx) =>{
 			})
 		})
 	}
+})
 
+//loop
+const botJob = new CronJob(`*/5 * * * * *`, async function () {
+	let latestProposal = func.getLatestProposalNum() //마지막 프로포절 번호 가져오기
 
-});
+	if(latestProposal !== 0 ){
+		let callProposalNum = latestProposal+1
+		let getProposal = func.getProposalFromServer(callProposalNum)
+		
+		if(typeof getProposal === "object"){
+			bot.telegram.sendMessage('-610675987', `New Proposal! #${callProposalNum} ${getProposal.title}\n\n ${getProposal.desc}\n\nhttps://www.mintscan.io/osmosis/proposals/${callProposalNum}`)
+		} else if(getProposal === 203){
+			logger.debug(`${callProposalNum} proposal is not found`)
+		} else{
+			logger.error(`server error`)
+		}
+	}else{
+		logger.error(`latestProposal is 0`)
+	}
+	
+}).start()

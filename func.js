@@ -150,6 +150,20 @@ function getProposalFromLocal(num){//read Proposal json
 	}
 }
 
+function getLatestProposalNum(){
+	let latestProposal = 0
+	
+	try{
+		var files = fs.readdirSync('./json/proposals')
+		for(var i = 0; i < files.length; i++){
+			latestProposal = parseInt(files[i].replace(/\.[^/.]+$/, ""))
+		}
+		return latestProposal
+	} catch(err){
+		return 0
+	}
+}
+
 function numberWithCommas(x) {
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
@@ -193,5 +207,6 @@ module.exports = {
 	getProvalidatorDetail : getProvalidatorDetail,
 	getProposal : getProposal,
 	getProposalFromServer : getProposalFromServer,
-	getProposalFromLocal : getProposalFromLocal
+	getProposalFromLocal : getProposalFromLocal,
+	getLatestProposalNum : getLatestProposalNum
 }
