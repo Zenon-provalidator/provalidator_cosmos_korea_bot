@@ -97,17 +97,14 @@ function getProposal(num){
 			return "Sorry! bot has error."
 		}else{
 			title = jsonServer.title
-			desc = jsonServer.desc
 		}
 	} else {
 		//proposal is not fixed
 		if(jsonLocal.status === "PROPOSAL_STATUS_PASSED" || jsonLocal.status === "PROPOSAL_STATUS_REJECTED"){
 			title = jsonLocal.title
-			desc = jsonLocal.desc
 		} else{
 			let jsonServer = getProposalFromServer(num) //get server data
 			title = jsonServer.title
-			desc = jsonServer.desc
 		}
 	}
 	let prvDetail = getProvalidatorDetail()//get provalidator detail info
@@ -117,8 +114,7 @@ function getProposal(num){
 	let msg = `<b>⚛️ 코스모스 ($ATOM) 거버넌스</b>\n` 
 	msg += `ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n\n`
 	msg += `<b>🗳️프로포절</b>\n\n`
-	msg += `#${num} ${title}\n`
-	msg += `${desc}\n\n`
+	msg += `#${num} ${title}\n\n`
 	msg += `📌<a href='https://www.mintscan.io/cosmos/proposals/${num}'>https://www.mintscan.io/cosmos/proposals/${num}</a>\n\n`
 	msg += `<b>프로밸리와 $ATOM 스테이킹 하세요❤</b>\n\n`
 	msg += `<b>🏆검증인 순위: #${prvRank}</b>\n\n`
