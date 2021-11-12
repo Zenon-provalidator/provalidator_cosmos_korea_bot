@@ -75,7 +75,7 @@ bot.command('proposal', (ctx) =>{
 })
 
 //loop
-const botJob = new CronJob(`*/5 * * * * *`, async function () {
+const botJob = new CronJob(`*/60 * * * * *`, async function () {
 	let latestProposal = func.getLatestProposalNum() //마지막 프로포절 번호 가져오기
 
 	if(latestProposal !== 0 ){
