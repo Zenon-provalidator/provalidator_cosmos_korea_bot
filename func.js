@@ -115,7 +115,7 @@ function getProposal(num){
 	let prvRate = (prvDetail.rate * 100)
 	let prvTokens = (prvDetail.tokens/ 1000000).toFixed(0)
 	let msg = `<b>⚛️ 코스모스 ($ATOM) 거버넌스</b>\n` 
-	msg += `ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n`
+	msg += `ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n\n`
 	msg += `<b>🗳️프로포절</b>\n\n`
 	msg += `#${num} ${title}\n`
 	msg += `${desc}\n\n`
