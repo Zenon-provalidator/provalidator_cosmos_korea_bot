@@ -6,15 +6,21 @@ const logger = require('./log4js').log4js//logger
 const func = require('./func')
 require('dotenv').config()
 const bot = new Telegraf(process.env.BOT_TOKEN, {username: process.env.BOT_ID})
+const CronJob = require('cron').CronJob
 
 //session
 bot.use(session())
 //commandParts
 bot.use(commandParts())
-////bot start
+//bot start
 bot.startPolling()
 
 let msgArr = new Array()//save msg array
+
+//loop
+const botJob = new CronJob(`*/5 * * * * *`, async function () {
+	console.log(1)
+}).start()
 
 //cosmos
 bot.command('staking', (ctx) =>{
@@ -32,11 +38,11 @@ bot.command('staking', (ctx) =>{
 		bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, msg, Extra.HTML()).catch(err=>{				
 			logger.error(`=======================cosmos main1=======================`)
 			logger.error(err)
-			bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, `Sorry! bot has error.`)
+			bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, `죄송합니다. 오류가 발생했습니다.`)
 		})
 	})
 }).catch(err=>{
-	bot.telegram.reply(`Sorry! bot has error.`)
+	bot.telegram.reply(`죄송합니다. 오류가 발생했습니다.`)
 	logger.error(err)
 })
 
@@ -56,7 +62,7 @@ bot.command('proposal', (ctx) =>{
 			bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, msg, Extra.HTML()).catch(err=>{				
 				logger.error(`=======================cosmos proposal1=======================`)
 				logger.error(err)
-				bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, `Sorry! bot has error.`)
+				bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, `죄송합니다. 오류가 발생했습니다.`)
 			})
 		})
 	} else{
@@ -67,7 +73,7 @@ bot.command('proposal', (ctx) =>{
 			bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, msg, Extra.HTML()).catch(err=>{				
 				logger.error(`=======================cosmos proposal2=======================`)
 				logger.error(err)
-				bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, `Sorry! bot has error.`)
+				bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, `죄송합니다. 오류가 발생했습니다.`)
 			})
 		})
 	}
