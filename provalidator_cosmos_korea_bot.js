@@ -49,31 +49,43 @@ bot.command('proposal', (ctx) =>{
 		})
 	}
 	//show message
-	if(/[0-9]/.test(ctx.state.command.args)){
+	if(/[0-9]/.test(ctx.state.command.args)){		
 		ctx.reply(`Please wait..`).then((m) => {
 			let msg = func.getProposal(ctx.state.command.args)//get proposal
 			msgArr[m.chat.id] = m.message_id
 			//edit message
-			bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, msg, Extra.HTML()).catch(err=>{				
+			bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, msg, { parse_mode: 'HTML', disable_web_page_preview : true}).catch(err=>{				
 				logger.error(`=======================cosmos proposal1=======================`)
 				logger.error(err)
 				bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, `Sorry! bot has error.`)
 			})
 		})
-	} else{
+	}else {
+		let latestProposal = func.getLatestProposalNum() //마지막 프로포절 번호 가져오기
 		ctx.reply(`Please wait..`).then((m) => {
-			let msg = "/proposal 1 과같이 숫자를 넣어주세요."//get message
+			let msg = func.getProposal(latestProposal)//get proposal
 			msgArr[m.chat.id] = m.message_id
 			//edit message
-			bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, msg, Extra.HTML()).catch(err=>{				
-				logger.error(`=======================cosmos proposal2=======================`)
+			bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, msg, { parse_mode: 'HTML', disable_web_page_preview : true}).catch(err=>{				
+				logger.error(`=======================cosmos proposal1=======================`)
 				logger.error(err)
 				bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, `Sorry! bot has error.`)
 			})
-		})
+		})		
 	}
+//	 else{
+//		ctx.reply(`Please wait..`).then((m) => {
+//			let msg = "/proposal 1 과같이 숫자를 넣어주세요."//get message
+//			msgArr[m.chat.id] = m.message_id
+//			//edit message
+//			bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, msg, Extra.HTML()).catch(err=>{				
+//				logger.error(`=======================cosmos proposal2=======================`)
+//				logger.error(err)
+//				bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, `Sorry! bot has error.`)
+//			})
+//		})
+//	}
 })
-
 //loop
 const botJob = new CronJob(`*/60 * * * * *`, async function () {
 	let latestProposal = func.getLatestProposalNum() //마지막 프로포절 번호 가져오기
