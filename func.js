@@ -119,8 +119,8 @@ function getProposal(num){
 	msg += `<b>프로밸리와 $ATOM 스테이킹 하세요❤</b>\n\n`
 	msg += `<b>🏆검증인 순위: #${prvRank}</b>\n\n`
 	msg += `<b>🔖수수료: ${prvRate}%</b>\n\n`
-	msg += `<b>🤝위임량: ${numberWithCommas(prvTokens)}</b>\n`
-	msg += `ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n\n`
+	msg += `<b>🤝위임량: ${numberWithCommas(prvTokens)}</b>\n\n`
+	msg += `ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n`
 	msg += `<b>프로밸리(<a href='https://provalidator.com'>Provalidator</a>) 검증인 만듦</b>`
 	return msg
 }
