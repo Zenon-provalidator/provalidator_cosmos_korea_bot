@@ -73,18 +73,6 @@ bot.command('proposal', (ctx) =>{
 			})
 		})		
 	}
-//	 else{
-//		ctx.reply(`Please wait..`).then((m) => {
-//			let msg = "/proposal 1 과같이 숫자를 넣어주세요."//get message
-//			msgArr[m.chat.id] = m.message_id
-//			//edit message
-//			bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, msg, Extra.HTML()).catch(err=>{				
-//				logger.error(`=======================cosmos proposal2=======================`)
-//				logger.error(err)
-//				bot.telegram.editMessageText(m.chat.id, m.message_id, m.message_id, `Sorry! bot has error.`)
-//			})
-//		})
-//	}
 })
 //loop
 const botJob = new CronJob(`*/60 * * * * *`, async function () {
