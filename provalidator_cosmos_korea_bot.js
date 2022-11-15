@@ -75,14 +75,13 @@ bot.command('proposal', (ctx) =>{
 	}
 })
 //loop
-//const botJob = new CronJob(`*/60 * * * * *`, async function () {
-//	let latestProposal = func.getLatestProposalNum() //마지막 프로포절 번호 가져오기
-//	
-//	if(latestProposal !== 0 ){
-//		let callProposalNum = latestProposal+1
-//		let getProposal = func.getProposalFromServer(callProposalNum)
-//		console.log(getProposal)
-//		
+const botJob = new CronJob(`*/60 * * * * *`, async function () {
+	let latestProposal = func.getLatestProposalNum() //마지막 프로포절 번호 가져오기
+	
+	if(latestProposal !== 0 ){
+		let callProposalNum = latestProposal+1
+		let getProposal = func.getProposalFromServer(callProposalNum)
+		
 //		if(typeof getProposal === "object"){
 //			let msg = `<b>⚛️ 코스모스 ($ATOM) 거버넌스</b>\n` 
 //			msg += `ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ\n\n`
@@ -98,8 +97,8 @@ bot.command('proposal', (ctx) =>{
 //		} else{
 //			logger.error(`server error`)
 //		}
-//	}else{
-//		logger.error(`latestProposal is 0`)
-//	}
-//	
-//}).start()
+	}else{
+		logger.error(`latestProposal is 0`)
+	}
+	
+}).start()
