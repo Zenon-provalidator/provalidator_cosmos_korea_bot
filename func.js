@@ -204,7 +204,7 @@ function getRank(sortData,obj){
 			rank = i +1
 		}
 	}
-	return rank > 0 ? rank +1 : rank
+	return rank //rank > 0 ? rank +1 : rank
 }
 
 function getCosmosInfo(){
